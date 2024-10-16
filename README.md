@@ -186,10 +186,12 @@ on the top right > **Administration settings** > **ONLYOFFICE** on the left bar 
 2. Click **ADD CLIENT**
 3. Choose **Server-based Applications**
 4. Type **Client Name** you want to naming. Example: **Nextcloud**
-5. In **Homepage URL** you type your nextcloud ip or dns. Example: `http://192.168.81.44`
+5. In **Homepage URL** you type your nextcloud ip or dns. Example: **http://192.168.81.44**
 6. In **Authorized Redirect URIs** type your auth redirect url. Example: **http://192.168.81.44/apps/sociallogin/custom_oauth2/zoho**
 7. Click **Create** you will get **Client ID** and **Client Secret**
 
+> [!NOTE]
+> For more information please go to **https://www.zoho.com/contracts/api/getting-started/registering-your-application.html**
 
 ### 2. Enable social login in Nextcloud
 
@@ -210,11 +212,11 @@ Click <img src="images/image-8.png"  height="30"/> to create new **Custom OAuth2
 
 - **Internal name** you naming you want. Example **Zoho**
 - **Title** you naming you want. Example **Zoho**
-- **API Base URL** type Zoho base url **https://accounts.zoho.com/oauth/v2**
-- **Authorize url** type Zoho auth url **https://accounts.zoho.com/oauth/v2/auth**
-- **Token url** type Zoho token url **https://accounts.zoho.com/oauth/v2/token**
-- **Profile url** type Zoho user url **https://accounts.zoho.com/oauth/user/info**
-- **Client id** type your Client id you get when register in `Zoho`
+- **API Base URL**: **https://accounts.zoho.com/oauth/v2**
+- **Authorize url**: **https://accounts.zoho.com/oauth/v2/auth**
+- **Token url**: **https://accounts.zoho.com/oauth/v2/token**
+- **Profile url**: **https://accounts.zoho.com/oauth/user/info**
+- **Client id** type your Client id you get when register in **Zoho**
 - **Client secret** type your Client secret you get when register in **Zoho**
 - **Scope** type your Zoho scope to read user info **AaaServer.profile.READ**
 - **Groups claim** you can type or not **groups**
