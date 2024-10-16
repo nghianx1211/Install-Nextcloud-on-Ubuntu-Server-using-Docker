@@ -260,6 +260,7 @@ below line (about line 64)
 
 > [!NOTE] If you use https you need to add ``` 'overwriteprotocol' => 'https',``` to file **nextcloud_data/config/config.php**
 
+### 4. Restart containers
 After config as above you restart containers with
 ```
 docker compose down
