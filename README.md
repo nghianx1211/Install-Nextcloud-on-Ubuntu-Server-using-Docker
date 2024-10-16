@@ -143,3 +143,125 @@ docker compose up -d
 
 > [!IMPORTANT] 
 > You need to wait about some minutes for the containers to start successfully!
+
+## Step 3: Create admin account
+
+<img src="images/image.png" alt="logo" width="300"/>
+
+You enter your admin account and click install and wait until create successfully!
+
+## Step 4: Integrate onlyoffice
+
+After login with your admin account.
+
+### 1. Download onlyoffice
+Click to your account logo <img src="images/image-3.png" alt="logo" width="30"/> 
+on the top right > apps > <img src="images/image-1.png" alt="logo" width="20"/> > 
+enter `onlyoffice ` you will see 
+
+<img src="images/image-4.png" alt="logo" height="50"/>
+
+Click `Download and enable`.
+
+### 2. Config onlyoffice
+Click to your account logo <img src="images/image-3.png" alt="logo" width="30"/> 
+on the top right > `Administration settings` > `ONLYOFFICE` on the left bar under `Administration`.
+
+<img src="images/image-6.png" alt="logo" height="200"/>
+
+`192.168.81.44` is ip of your server and `81` is your port config in docker compose file.
+
+`Secret key` is your `JWT_SECRET` value in docker compose file.
+
+> [!NOTE]
+> Sometime it show `https://help.nextcloud.com/t/an-error-occurred-while-trying-to-connect-an-error-occurred-in-the-document-service-error-while-downloading-the-document-file-to-be-converted-version-8-0-1-31/188336`.
+> You need to diable `onlyoffice` and enable it to make it work
+
+
+## Step 5: Integration to login Nextcloud with Zoho account
+
+### 1. Register your nexcloud to Zoho
+
+1. Go to `API zoho console` https://api-console.zoho.com/
+2. Click `ADD CLIENT`
+3. Choose `Server-based Applications`
+4. Type `Client Name` you want to naming. Example: `Nextcloud`
+5. In `Homepage URL` you type your nextcloud ip or dns. Example: `http://192.168.81.44`
+6. In `Authorized Redirect URIs` type your auth redirect url. Example: `http://192.168.81.44/apps/sociallogin/custom_oauth2/zoho`
+7. Click `Create` you will get `Client ID` and `Client Secret`
+
+
+### 2. Enable social login in Nextcloud
+
+Click to your account logo <img src="images/image-3.png" alt="logo" width="30"/> 
+on the top right > apps > <img src="images/image-1.png" alt="logo" width="20"/> > 
+enter `social login ` you will see 
+
+<img src="images/image-7.png" alt="logo" height="50"/> 
+
+Click `Download and enable`.
+
+### 3. Config Custom OAuth2 for Zoho
+
+Click to your account logo <img src="images/image-3.png" alt="logo" width="30"/> 
+on the top right > `Administration settings` > `Social login` on the left bar under `Administration`.
+
+Click <img src="images/image-8.png" alt="logo" height="30"/> to create new `Custom OAuth2`
+
+- `Internal name` you naming you want. Example `Zoho`
+- `Title` you naming you want. Example `Zoho`
+- `API Base URL` type Zoho base url `https://accounts.zoho.com/oauth/v2`
+- `Authorize url` type Zoho auth url `https://accounts.zoho.com/oauth/v2/auth`
+- `Token url` type Zoho token url `https://accounts.zoho.com/oauth/v2/token`
+- `Profile url` type Zoho user url `https://accounts.zoho.com/oauth/user/info`
+- `Client id` type your Client id you get when register in `Zoho`
+- `Client secret` type your Client secret you get when register in `Zoho`
+- `Scope` type your Zoho scope to read user info `AaaServer.profile.READ`
+- `Groups claim` you can type or not `groups`
+- Click `Save`
+
+> [!IMPORTANT] 
+> Because response Zoho return when get user info like
+ is not exist in custom oauth2 default of nextcloud so we need to edit in code.
+
+Response Zoho return to nextcloud when get user info:
+ ```
+ZUID: <your id>
+Display_Name: <your display name>
+Email: <your email>
+...
+ ```
+
+Edit files 
+```
+ sudo nano nextcloud_data/custom_apps/sociallogin/lib/Provider/CustomOAuth2.php
+ ```
+
+add this line
+```
+?? $response->ZUID
+```
+below line (about line 55)
+```
+?? $response->client_id 
+```
+
+and this line 
+
+```
+?? $response->Display_Name
+```
+below line (about line 64)
+```
+?? $response->name
+```
+
+> [!NOTE] If you use https you need to add ``` 'overwriteprotocol' => 'https',``` to file `nextcloud_data/config/config.php`
+
+After config as above you restart containers with
+```
+docker compose down
+docker compose up -d
+```
+
+And now your nextcloud was ready.
