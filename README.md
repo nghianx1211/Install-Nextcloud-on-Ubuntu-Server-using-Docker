@@ -223,8 +223,8 @@ Click <img src="images/image-8.png"  height="30"/> to create new **Custom OAuth2
 - Click **Save**
 
 > [!IMPORTANT] 
-> Because response Zoho return when get user info like
- is not exist in custom oauth2 default of nextcloud so we need to edit in code.
+> Because response Zoho return when get user info
+ is not exist in custom oauth2 default of nextcloud so we need to edit in code to make nextcloud get identifier of zoho.
 
 Response Zoho return to nextcloud when get user info:
  ```
